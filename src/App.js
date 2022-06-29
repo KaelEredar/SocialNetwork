@@ -1,6 +1,6 @@
 import './App.css';
 import NavBar from "./components/NavBar/NavBar";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -27,31 +27,29 @@ class App extends Component {
         }
 
         return (
-            <BrowserRouter>
-                <div className="app-wrapper">
-                    <HeaderContainer/>
-                    <NavBar/>
-                    <div className="app-wrapper-content">
-                        <Suspense fallback={<Preloader/>}>
-                            <Routes>
-                                <Route path="/profile/:userId" element={
-                                    <ProfileContainer/>}
-                                />
-                                <Route path='/profile' element={<ProfileContainer/>}/>
-                                <Route path="/dialogs/*" element={
-                                    <DialogsContainer/>}
-                                />
-                                <Route path="/users" element={
-                                    <UsersContainer/>}
-                                />
-                                <Route path="/login" element={
-                                    <LoginPage/>}
-                                />
-                            </Routes>
-                        </Suspense>
-                    </div>
+            <div className="app-wrapper">
+                <HeaderContainer/>
+                <NavBar/>
+                <div className="app-wrapper-content">
+                    <Suspense fallback={<Preloader/>}>
+                        <Routes>
+                            <Route path="/profile/:userId" element={
+                                <ProfileContainer/>}
+                            />
+                            <Route path='/profile' element={<ProfileContainer/>}/>
+                            <Route path="/dialogs/*" element={
+                                <DialogsContainer/>}
+                            />
+                            <Route path="/users" element={
+                                <UsersContainer/>}
+                            />
+                            <Route path="/login" element={
+                                <LoginPage/>}
+                            />
+                        </Routes>
+                    </Suspense>
                 </div>
-            </BrowserRouter>
+            </div>
         );
     }
 }
@@ -64,10 +62,12 @@ const AppContainer = connect(mapStateToProps, {initializeApp})(App);
 
 const SocialNetworkApp = (props) => {
     return <React.StrictMode>
-        <Provider store={store}>
-            <AppContainer
-            />
-        </Provider>
+        <HashRouter basename={process.env.PUBLIC}>
+            <Provider store={store}>
+                <AppContainer
+                />
+            </Provider>
+        </HashRouter>
     </React.StrictMode>
 }
 
