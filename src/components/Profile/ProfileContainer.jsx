@@ -1,9 +1,8 @@
 import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getStatus, getUsersProfile, updateStatus} from "../../redux/profile-reducer";
+import {getStatus, getUsersProfile, updateStatus, savePhoto} from "../../redux/profile-reducer";
 import {
-    Navigate,
     useLocation,
     useNavigate,
     useParams,
@@ -13,7 +12,7 @@ import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount() {
+    refreshProfile() {
         let userId = this.props.router.params.userId ;
         if(!userId){
             userId = 23833;
@@ -22,13 +21,25 @@ class ProfileContainer extends React.Component {
         this.props.getStatus(userId);
     }
 
+    componentDidMount() {
+        this.refreshProfile();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.router.params.userId !== prevProps.router.params.userId) {
+            this.refreshProfile();
+        }
+    }
+
     render() {
         return (
             <Profile
                 {...this.props}
+                isOwner={!this.props.router.params.userId}
                 profile={this.props.profile}
                 status={this.props.status}
                 updateStatus={this.props.updateStatus}
+                savePhoto={this.props.savePhoto}
             />
         )
     }
@@ -60,7 +71,7 @@ const withRouter = (Component) => {
 }
 
 export default  compose(
-    connect(mapStateToProps, {getUsersProfile, getStatus, updateStatus}),
+    connect(mapStateToProps, {getUsersProfile, getStatus, updateStatus, savePhoto}),
     withRouter,
     // withAuthRedirect
 )(ProfileContainer);
