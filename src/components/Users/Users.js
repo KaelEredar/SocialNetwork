@@ -6,36 +6,18 @@ import Paginator from "../common/Paginator/Paginator";
 
 const Users = (props) => {
 
-    // let pagesCount = Math.ceil(props.totalUserCount / props.pageSize);
-    //
-    // let pages = [];
-    // for (let i = 1; i <= pagesCount; i++) {
-    //     if (pages.length < 20) {
-    //         pages.push(i);
-    //     }
-    // }
 
     return (
         <div>
             <Paginator
                 currentPage={props.currentPage} onPageChanged={props.onPageChanged}
                 totalItemsCount={props.totalUserCount} pageSize={props.pageSize} />
-            {/*<dic>*/}
-            {/*    {pages.map(p => {*/}
-            {/*        return <span*/}
-            {/*            className={props.currentPage === p && s.selectedPage}*/}
-            {/*            onClick={(e) => {*/}
-            {/*                props.onPageChanged(p)*/}
-            {/*            }}*/}
-            {/*        >{p}</span>*/}
-            {/*    })}*/}
-            {/*</dic>*/}
             {
                 props.users.map(u => <div key={u.id}>
         <span>
           <div>
               <NavLink to={'/profile/' + u.id}>
-            <img src={u.photos.small != null ? u.photos.small : usersPhoto} className={s.userPhoto}/>
+            <img alt={'UserPhoto'} src={u.photos.small != null ? u.photos.small : usersPhoto} className={s.userPhoto}/>
                   </NavLink>
           </div>
           <div>

@@ -1,27 +1,28 @@
 import React from "react";
 import {Field, ErrorMessage} from "formik";
+import s from "./FormikControl.module.css"
 
 const TextError = (props) => {
     return (
-        <div className={'error'}>
+        <div className={s.error}>
             {props.children}
         </div>)
 }
 
 const Input = (props) => {
-    const {label, name, ...rest} = props
-    return <div className={'form-control'}>
+    const {label, name, id, ...rest} = props
+    return <div key={props.key}>
         <label htmlFor={name}>{label}</label>
-        <Field id={name} name={name} {...rest} placeholder={name}/>
+        <Field id={id} name={name} {...rest} placeholder={name}/>
         <ErrorMessage name={name} component={TextError}/>
     </div>
 }
 
 const TextArea = (props) => {
-    const {label, name, ...rest} = props
+    const {label, name, id, ...rest} = props
     return <div className={'form-control'}>
         <label htmlFor={name}>{label}</label>
-        <Field as={'textarea'} id={name} name={name} {...rest}/>
+        <Field as={'textarea'} id={id} name={name} {...rest}/>
         <ErrorMessage name={name} component={TextError}/>
     </div>
 }
