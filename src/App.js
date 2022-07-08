@@ -1,6 +1,6 @@
 import './App.css';
 import NavBar from "./components/NavBar/NavBar";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -11,13 +11,22 @@ import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/Preloader";
 import store from "./redux/redux-store";
 
-// import DialogsContainer from "./components/Dialogs/DialogsContainer";
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
 class App extends Component {
 
+    catchAllUnhandedErrors = (promiseRejectionEvent) => {
+        alert('Some error occurred');
+        console.error(promiseRejectionEvent);
+    }
+
     componentDidMount() {
         this.props.initializeApp();
+        window.addEventListener("unhandledrejection", this.catchAllUnhandedErrors);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandedErrors);
     }
 
     render() {
@@ -36,6 +45,9 @@ class App extends Component {
                             <Route path="/profile/:userId" element={
                                 <ProfileContainer/>}
                             />
+                            <Route path="/" element={
+                                <Navigate to='/profile'/>}
+                            />
                             <Route path='/profile' element={<ProfileContainer/>}/>
                             <Route path="/dialogs/*" element={
                                 <DialogsContainer/>}
@@ -45,6 +57,9 @@ class App extends Component {
                             />
                             <Route path="/login" element={
                                 <LoginPage/>}
+                            />
+                            <Route path='*' element={
+                                <div>404 NOT FOUND</div>}
                             />
                         </Routes>
                     </Suspense>
