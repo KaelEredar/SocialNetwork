@@ -9,7 +9,7 @@ import LoginForm from "./LoginForm";
 
 const Login = (props) => {
     const onSubmit = (values, onSubmitProps) => {
-        props.login(values.email, values.password, values.isRemembered, onSubmitProps.setStatus);
+        props.login(values.email, values.password, values.isRemembered, onSubmitProps.setStatus, props.captcha);
         onSubmitProps.setSubmitting(false);
     }
     if(props.isAuth) {
@@ -18,12 +18,13 @@ const Login = (props) => {
 
     return <div className={"login-container"}>
         <h1>Login</h1>
-        <LoginForm onSubmit={onSubmit}/>
+        <LoginForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
 
     </div>
 }
 
 const mapStateToProps = (state) => ({
+    captchaUrl: state.auth.captchaUrl,
     isAuth: state.auth.isAuth
 })
 
