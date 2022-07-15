@@ -54,6 +54,12 @@ export const authAPI =  {
     me() {
         return instance.get(`auth/me`);
     },
+    /**
+     * @param {string} email
+     * @param {string} password
+     * @param {boolean} rememberMe
+     * @param {*} captcha
+     */
     login(email, password, rememberMe = false, captcha = null) {
         return instance.post(`auth/login`, { email, password, rememberMe, captcha});
     },
