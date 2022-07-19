@@ -19,14 +19,40 @@ import {
     getPageSize,
     getTotalUsersCount
 } from "../../redux/users-selectors";
+import {UserType} from "../../types/types";
+import {AppStateType} from "../../redux/redux-store";
 
-class UsersContainer extends React.Component {
+type MapStatePropsType = {
+    currentPage: number
+    pageSize: number
+    totalUserCount: number
+    isFetching: boolean
+    users: Array<UserType>
+    followingInProgress: Array<number>
+}
+
+type MapDispatchPropsType = {
+    getUsers: (currentPage: number, pageSize: number) => void
+    setCurrentPage: (currentPage: number) => void
+    unfollow: (userId: number) => void
+    follow: (userId: number) => void
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
+}
+
+type OwnPropsType = {
+    pageTitle: string
+}
+
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
+
+class UsersContainer extends React.Component<PropsType> {
 
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
         };
 
-    onPageChanged = (pageNumber) => {
+    onPageChanged = (pageNumber: number) => {
         this.props.getUsers(pageNumber, this.props.pageSize);
         this.props.setCurrentPage(pageNumber);
     };
@@ -42,6 +68,7 @@ class UsersContainer extends React.Component {
         }
 
         return <>
+            <h2>{this.props.pageTitle}:</h2>
             {this.props.isFetching ? <Preloader/> : null}
             <Users
             totalUserCount={this.props.totalUserCount}
@@ -58,7 +85,7 @@ class UsersContainer extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         users: getUsers(state),
         pageSize: getPageSize(state),
@@ -72,7 +99,7 @@ const mapStateToProps = (state) => {
 
 export default compose(
     // withAuthRedirect,
-    connect(mapStateToProps,  {
+    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps,  {
             follow,
             unfollow,
             setCurrentPage,

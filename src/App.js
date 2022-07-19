@@ -53,7 +53,7 @@ class App extends Component {
                                 <DialogsContainer/>}
                             />
                             <Route path="/users" element={
-                                <UsersContainer/>}
+                                <UsersContainer pageTitle={"Samurais"}/>}
                             />
                             <Route path="/login" element={
                                 <LoginPage/>}
