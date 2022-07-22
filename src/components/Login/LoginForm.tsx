@@ -1,9 +1,22 @@
 import loginFormSchema from "../FormValidations/LoginFormSchema";
-import {Field, Form, Formik} from "formik";
+import {Field, Form, Formik, FormikHelpers} from "formik";
 import FormikControl from "../common/FormikControl/FormikControl";
 import React from "react";
 
-const LoginForm = ({onSubmit, captchaUrl}) => {
+type PropsType = {
+    onSubmit: (values: InitialFormValuesType, onSubmitProps: FormikHelpers<InitialFormValuesType>) => void
+    captchaUrl: string | null
+}
+
+export type InitialFormValuesType = {
+    email: string
+    password: string
+    isRemembered: boolean
+    captcha: string
+}
+
+const LoginForm: React.FC<PropsType> = ({onSubmit, captchaUrl}) => {
+
     const initialValues = {
         email: '',
         password: '',
@@ -52,4 +65,5 @@ const LoginForm = ({onSubmit, captchaUrl}) => {
         </Formik>
     )
 }
+
 export default LoginForm;

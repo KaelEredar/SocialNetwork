@@ -77,6 +77,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
     }
 }
 
+
 export const login = (email: string, password: string, rememberMe: boolean,
                       setStatus: (messages: Array<string>) => void, captcha: null | string): ThunkType => async (dispatch) => {
     const loginData = await authAPI.login(email, password, rememberMe, captcha);
